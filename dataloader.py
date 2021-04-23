@@ -14,7 +14,7 @@ class MT5Dataset(Dataset):
     def __init__(self, path=None):
         self.data      = None
         self.date_from = None
-        self.data_to   = None
+        self.date_to   = None
         self.count     = None
         if path:
             self.load(path)
@@ -41,7 +41,7 @@ class MT5Dataset(Dataset):
         datainfo = torch.load(path)
         self.data      = datainfo['data']
         self.date_from = datainfo['date_from']
-        self.data_to   = datainfo['data_to']
+        self.date_to   = datainfo['date_to']
         self.count     = datainfo['count']
 
     def copy(self, symbol, date_from, date_to=None, count=None, timeframe=mt5.TIMEFRAME_H1):
@@ -57,7 +57,7 @@ class MT5Dataset(Dataset):
         """
         self.data = []
         self.date_from = date_from
-        self.data_to   = date_to
+        self.date_to   = date_to
         self.count     = count
         for i in range(len(symbol)):
             if count:
@@ -111,8 +111,8 @@ class DataLoader:
             step = 1
 
         self.input_idx = np.arange(0, shape[0]-seq_len-label_len+1, step=step)  # index selection
-        self.input_idx = np.stack([self.input_idx] * shape[1])                   # symbols
-        self.input_idx = np.stack([self.input_idx+i for i in range(seq_len)])    # seq_len
+        self.input_idx = np.stack([self.input_idx] * shape[1])                  # symbols
+        self.input_idx = np.stack([self.input_idx+i for i in range(seq_len)])   # seq_len
         self.input_idx = self.input_idx.transpose(0, 2, 1)
         # input_idx shape : (seq_len, shape[0]-seq_len+1, symbols)
         self.batch_num = self.input_idx.shape[1]
