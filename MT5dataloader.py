@@ -72,7 +72,6 @@ class MT5Dataset(Dataset):
                 print(f'{symbol[i]} data copy error, skip')
             else:
                 self.data += [data]
-
         self.data = torch.FloatTensor(self.data).permute(1, 0, 2)
 
     def __getitem__(self, X):
